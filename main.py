@@ -19,7 +19,7 @@ LONG_BREAK_MIN = 20
 
 window = Tk()
 window.title("Simple Pomodoro")
-window.config(padx = 100,pady=50)
+window.config(padx = 100,pady=50, bg = YELLOW)
 canvas = Canvas(width =200 ,height =224)
 tomato_image =  PhotoImage(file = "tomato.png")
 canvas.create_image(103,112,image = tomato_image)
