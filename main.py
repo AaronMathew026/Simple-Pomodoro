@@ -16,7 +16,6 @@ reps = 0
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
     global reps
-    reps += 1
 
     print(reps)
     if reps % 2 > 0 and reps != 7:
@@ -32,6 +31,7 @@ def start_timer():
         reps = 0 
         checkmark.config(text="")
     checkmark.config(text="✅" * (reps // 2))
+    reps += 1
     countdown(time_to_count)
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
