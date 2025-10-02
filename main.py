@@ -9,9 +9,25 @@ WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 reps = 0
+timer = None
+
+# ---------------------------- TIMER STOP ------------------------------- # 
+def stop_timer():
+    global timer
+    if timer is not None:
+        window.after_cancel(timer)
+        timer = None
 
 # ---------------------------- TIMER RESET ------------------------------- # 
-
+def reset_timer():
+    global reps, timer
+    if timer is not None:
+        window.after_cancel(timer)
+        timer = None
+    title_text.config(text="Timer") 
+    canvas.itemconfig(timer_text, text="00:00")
+    checkmark.config(text="")
+    reps = 0
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
@@ -32,11 +48,12 @@ def start_timer():
         checkmark.config(text="")
     checkmark.config(text="✅" * (reps // 2))
     reps += 1
-    countdown(time_to_count)
+    countdown(time_to_count*60)
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 
 def countdown(count):
+    global timer
 
     minutes = count // 60
     if minutes < 10:
@@ -50,7 +67,7 @@ def countdown(count):
     time =f"{minutes}:{seconds}"
     canvas.itemconfig(timer_text, text =time)
     if count > 0:
-        window.after(100,countdown,count - 1)
+        timer = window.after(1000,countdown,count - 1)
     else:
         start_timer()
 
@@ -71,13 +88,16 @@ canvas.grid(column=1,row=5)
 timer_text = canvas.create_text(103,130,text="00:00",fill = "white",font = (FONT_NAME,35,"bold"))
 
 
-start_button = Button(text = "Start",command = start_timer,font = (FONT_NAME,15,"bold"))
+start_button = Button(text = "Start",command = start_timer,font = (FONT_NAME,12,"bold"))
 start_button.grid(column=0,row=6)
 
-Reset_button = Button(text = "Reset",command = None, font =  (FONT_NAME,15,"bold"))
+stop_button = Button(text = "Stop",command = stop_timer,font = (FONT_NAME,12,"bold"))
+stop_button.grid(column=1,row=7)
+
+Reset_button = Button(text = "Reset",command = reset_timer, font =  (FONT_NAME,12,"bold"))
 Reset_button.grid(column=2,row=6)
 
-checkmark = Label(text="✅",font=(FONT_NAME,10,"bold"),bg = YELLOW,)
+checkmark = Label(text="",font=(FONT_NAME,10,"bold"),bg = YELLOW,)
 checkmark.grid(column = 1, row =6 )
 
 title_text = Label(text="Timer",font=(FONT_NAME,20,"bold"),bg = YELLOW,fg= GREEN)
